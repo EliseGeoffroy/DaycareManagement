@@ -3,6 +3,11 @@ using System.Runtime.CompilerServices;
 
 namespace ChildrenManagementClasses;
 
+/// <summary>
+/// class abstract
+/// Mother of Child, TrustedPerson and Educator
+/// </summary>
+/// <param name="identity"> Identity class (look below)</param>
 public abstract class Person(Identity identity)
 {
 
@@ -16,6 +21,17 @@ public abstract class Person(Identity identity)
     }
 }
 
+/// <summary>
+/// Formal Identity of a Person with required properties :
+/// 
+/// -Id (long with 13 digits)
+/// -Name (string between 2 and 70 char)
+/// -Firstname (string between 2 and 70 char)
+/// -Nationality (enum Nationalities (see below))
+/// 
+/// 2 constructors (one empty, one with all the above properties)
+/// method ValidateProperty which permits validation with attributes in a Form
+/// </summary>
 public class Identity
 {
 

@@ -3,8 +3,16 @@ using System.Reflection;
 
 namespace General;
 
+/// <summary>
+/// Toolkit for this project
+/// </summary>
 public static class Utilities
 {
+    /// <summary>
+    /// Calculate an age from a birthdate and today date 
+    /// </summary>
+    /// <param name="birthDate"> DateTime date</param>
+    /// <returns> int age in month</returns>
     public static int CalculateAgeInMonth(DateTime birthDate)
     {
         int age = 0;
@@ -29,7 +37,11 @@ public static class Utilities
         return age;
     }
 
-    public static void HandleValidationError(Action saisie)
+    /// <summary>
+    /// Handle various possible exceptions about a generic form (handle validation)
+    /// </summary>
+    /// <param name="entry"> method of recuperation and handling inputdata</param>
+    public static void HandleValidationError(Action entry)
     {
         bool erreur;
         do
@@ -37,7 +49,7 @@ public static class Utilities
             erreur = false;
             try
             {
-                saisie();
+                entry();
             }
             catch (TargetInvocationException tie)
             {
@@ -57,6 +69,11 @@ public static class Utilities
         } while (erreur);
     }
 
+    /// <summary>
+    /// Generic method which permits to handle all needed properties with an input data
+    /// </summary>
+    /// <typeparam name="T"> object type (Child, Identity, TrustedPerson,..)</typeparam>
+    /// <param name="obj"></param>
     public static void InputData<T>(T obj) where T : class
     {
         PropertyInfo[] propertyList = obj.GetType().GetProperties();
@@ -86,6 +103,14 @@ public static class Utilities
         }
     }
 
+    /// <summary>
+    /// !!!! ONLY FOR TEST !!!!
+    /// Idem above but no input data, data are provided by a table with all needed properties values
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="obj"></param>
+    /// <param name="values">testSet</param>
+    /// <exception cref="ArgumentException"> if testSet is invalid (too few or too much values)</exception>
     public static void InputDataTest<T>(T obj, string?[] values) where T : class
     {
         List<PropertyInfo> propertyList = obj.GetType().GetProperties().ToList<PropertyInfo>();

@@ -1,11 +1,23 @@
 using System.ComponentModel.DataAnnotations;
 using ValidationBase;
-using System.Runtime.CompilerServices;
 using General;
-using System.Text.Json.Serialization;
+
 
 namespace ChildrenManagementClasses;
 
+/// <summary>
+/// represents a Child who is also a Person 
+/// 
+///properties :
+///Identity Identity 
+///DateTime BirthDate (Required, between Today-4years et Today)
+///string PicturePath :  URL to child's picture
+///int AgeInMonth (in month) : calculated from the birthdate
+///List<TrustedPerson> ContactList : list with trustedAdults enough to come picking the child
+///
+/// 2 constructors : with Identity, BirthDate and pictuyre path or with only Identity
+/// 1 ToString()
+/// </summary>
 public class Child : Person
 {
     private DateTime _birthDate;
