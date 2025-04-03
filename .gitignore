@@ -1,0 +1,28 @@
+# Fichiers binaires
+bin/
+obj/
+
+# Packages NuGet
+packages/
+
+# Fichiers de configuration utilisateur
+*.user
+*.suo
+
+# Cache ReSharper
+_ReSharper*/
+
+# VS Code
+.vscode/
+
+# Résultats de tests
+TestResults/
+
+# Fichiers de débogage
+*.pdb
+
+# Fichiers de sauvegarde
+*.bak
+
+# Fichiers de configuration de déploiement
+appsettings.Development.json
