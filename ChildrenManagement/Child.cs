@@ -15,8 +15,10 @@ namespace ChildrenManagementClasses;
 ///int AgeInMonth (in month) : calculated from the birthdate
 ///List<TrustedPerson> ContactList : list with trustedAdults enough to come picking the child
 ///
+/// Methods:
 /// 2 constructors : with Identity, BirthDate and pictuyre path or with only Identity
 /// 1 ToString()
+/// AddATrustedPerson(TrustedPerson) : adds a TrustedPerson in the ContactList
 /// </summary>
 public class Child : Person
 {
@@ -24,8 +26,8 @@ public class Child : Person
 
     [Required(ErrorMessage = "Merci de bien vouloir renseigner la date de naissance de votre enfant")]
     [DataType(DataType.DateTime, ErrorMessage = "Le format de la date n'est pas valide.")]
-    [CustomValidation(typeof(ValidationRules), nameof(ValidationRules.ValidateBirthDate))]
-    [Display(Prompt = "Date de Naissance (AAAA/MM/JJ)")]
+    [CustomValidation(typeof(ValidationRules), nameof(ValidationRules.ValidateChildBirthDate))]
+    [Display(Prompt = "Date de Naissance (JJ/MM/AAAA)")]
     public DateTime BirthDate
     {
         get => _birthDate;
@@ -55,7 +57,7 @@ public class Child : Person
     }
 
     public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate);
-    public List<TrustedPerson>? ContactList { get; set; }
+    public List<TrustedPerson> ContactList { get; set; } = [];
 
     public Child(Identity identity, DateTime birthDate, string? picturePath = null) : base(identity)
     {
@@ -68,7 +70,26 @@ public class Child : Person
 
     public override string ToString()
     {
-        return $"Id:{Identity.Id},Nom:{Identity.Name}, Prénom: {Identity.Firstname}, Nationalité:{Identity.Nationality}, Date de naissance:{BirthDate}, Age:{AgeInMonth} mois";
+        string Description = $"{Identity.Id,-13} ; {Identity.Name,-25} ;   {Identity.Firstname,-15} ; {Identity.Nationality,10} ; {BirthDate:d} ; {AgeInMonth:D2} mois\n";
+        foreach (TrustedPerson trustedPerson in ContactList)
+        {
+            Description += " - " + trustedPerson.ToString() + '\n';
+        }
+        return Description;
+    }
+
+    /// <summary>
+    /// Allows the addition of a Trusted Person (an adult who can pick up the child and whom we can contact) to the Contact List, with a limit of 5 Trusted People.
+    /// </summary>
+    /// <param name="trustedPerson">Adult who can pick up the child and whom we can contact</param>
+    /// <exception cref="InvalidOperationException">If there are already 5 TrustedPeople</exception>
+    public void AddATrustedPerson(TrustedPerson trustedPerson)
+    {
+        if (ContactList.Count < 5)
+            ContactList.Add(trustedPerson);
+        else
+            throw new InvalidOperationException("Vous ne pouvez pas renseigner plus de 5 contacts d'urgence pour votre enfant");
+
     }
 
 

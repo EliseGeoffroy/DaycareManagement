@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using ChildrenManagementClasses;
 
 namespace General;
 
@@ -8,6 +9,7 @@ namespace General;
 /// </summary>
 public static class Utilities
 {
+    #region General Tools
     /// <summary>
     /// Calculate an age from a birthdate and today date 
     /// </summary>
@@ -36,6 +38,9 @@ public static class Utilities
         }
         return age;
     }
+    #endregion
+
+    #region Handle Input
 
     /// <summary>
     /// Handle various possible exceptions about a generic form (handle validation)
@@ -102,6 +107,9 @@ public static class Utilities
 
         }
     }
+    #endregion
+
+    #region Methods for Tests
 
     /// <summary>
     /// !!!! ONLY FOR TEST !!!!
@@ -145,8 +153,8 @@ public static class Utilities
                 }
             }
         }
-
     }
+    #endregion
 
 
 }
