@@ -5,6 +5,25 @@ using General;
 
 namespace ChildrenManagementClasses;
 
+public interface IChild
+{
+    public DateTime BirthDate { get; set; }
+
+    public string? PicturePath { get; set; }
+
+
+    public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate);
+    public List<TrustedPerson> ContactList { get; set; }
+
+    /// <summary>
+    /// Allows the addition of a Trusted Person (an adult who can pick up the child and whom we can contact) to the Contact List, with a limit of 5 Trusted People.
+    /// </summary>
+    /// <param name="trustedPerson">Adult who can pick up the child and whom we can contact</param>
+    /// <exception cref="InvalidOperationException">If there are already 5 TrustedPeople</exception>
+    void AddATrustedPerson(TrustedPerson trustedPerson);
+
+}
+
 /// <summary>
 /// represents a Child who is also a Person 
 /// 
@@ -22,6 +41,8 @@ namespace ChildrenManagementClasses;
 /// </summary>
 public class Child : Person
 {
+
+    #region Fields & Properties
     private DateTime _birthDate;
 
     [Required(ErrorMessage = "Merci de bien vouloir renseigner la date de naissance de votre enfant")]
@@ -59,6 +80,29 @@ public class Child : Person
     public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate);
     public List<TrustedPerson> ContactList { get; set; } = [];
 
+    public ChildTypes ChildType
+    {
+        get
+        {
+            if (AgeInMonth < (int)ChildTypes.Baby)
+            {
+                return ChildTypes.Baby;
+            }
+            else if (AgeInMonth < (int)ChildTypes.Toddler)
+            {
+                return ChildTypes.Toddler;
+            }
+            else
+            {
+                return ChildTypes.Kid;
+            }
+        }
+    }
+
+    public Group? Group { get; set; }
+
+    #endregion
+
     public Child(Identity identity, DateTime birthDate, string? picturePath = null) : base(identity)
     {
         BirthDate = birthDate;
@@ -70,12 +114,28 @@ public class Child : Person
 
     public override string ToString()
     {
-        string Description = $"{Identity.Id,-13} ; {Identity.Name,-25} ;   {Identity.Firstname,-15} ; {Identity.Nationality,10} ; {BirthDate:d} ; {AgeInMonth:D2} mois\n";
+        string description = $"""
+        {Identity.Id,-13} ; {Identity.Name,-25} ;   {Identity.Firstname,-15} ; {Identity.Nationality,10} ; {BirthDate:d} ; {AgeInMonth:D2} mois
+        Groupe : {Group?.Name ?? "Pas de groupe"},
+        Educateurs/Educatrices :
+        
+        """;
+        if (Group != null)
+        {
+            foreach (Educator educator in Group.Educators)
+            {
+                description += "- " + educator.ToString() + '\n';
+            }
+        }
+
+        description += "Personnes de confiance : \n";
+
         foreach (TrustedPerson trustedPerson in ContactList)
         {
-            Description += " - " + trustedPerson.ToString() + '\n';
+            description += " - " + trustedPerson.ToString() + '\n';
         }
-        return Description;
+
+        return description;
     }
 
     /// <summary>
@@ -92,10 +152,20 @@ public class Child : Person
 
     }
 
-
+    public void FindAGroup(List<Group> groupList)
+    {
+        Group? group = groupList.Where(g => g.ChildType == ChildType && g.CurrentCapacity < g.FullCapacity).FirstOrDefault();
+        if (group != null)
+        {
+            Group = group;
+            Group.AddAChild(this);
+        }
+        else
+        {
+            throw new InvalidOperationException("Aucune place n'est disponible pour cet âge. L'inscription est annulée.");
+        }
+    }
 
 }
-
-
 
 

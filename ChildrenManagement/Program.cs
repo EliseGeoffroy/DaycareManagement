@@ -2,11 +2,14 @@
 using ChildrenManagementClasses;
 using General;
 
+List<Group> groupList = InitializeGroups();
+
 Identity childIdentity = new();
 Utilities.InputData<Identity>(childIdentity);
 
 Child child = new(childIdentity);
 Utilities.InputData<Child>(child);
+
 
 bool addATrustedPerson = true;
 
@@ -45,8 +48,34 @@ while (addATrustedPerson)
     }
 }
 
-
+try
+{
+    child.FindAGroup(groupList);
+}
+catch (InvalidOperationException ioe)
+{
+    System.Console.WriteLine(ioe.Message);
+}
 
 System.Console.WriteLine(child);
 
 
+
+static List<Group> InitializeGroups()
+{
+    List<Educator> educatorList = [
+        new Educator(new Identity(1472583693692,"DaSilva","Maria", Nationalities.Portuguese),ChildTypes.Baby),
+    new Educator(new Identity(1472583693693,"Roussel","Aurélie", Nationalities.Belgian),ChildTypes.Toddler),
+    new Educator(new Identity(1472583693694,"VanRichter","Anna", Nationalities.Luxembourgish),ChildTypes.Kid),
+    new Educator(new Identity(1472583693695,"Schmidt","Klaus", Nationalities.German),ChildTypes.Baby),
+    new Educator(new Identity(1472583693696,"Cacciatore","Nicola", Nationalities.Italian),ChildTypes.Toddler),
+    new Educator(new Identity(1472583693692,"Dujardin","Laurent", Nationalities.French),ChildTypes.Kid),
+];
+
+    return [
+        new Group("Les cacahouètes",10,ChildTypes.Baby,educatorList[0],educatorList[3]),
+        new Group("Les Nooooooon!",10,ChildTypes.Toddler,educatorList[1],educatorList[4]),
+        new Group("Les Pourquoi ?",10,ChildTypes.Kid,educatorList[2],educatorList[5])
+    ];
+
+}

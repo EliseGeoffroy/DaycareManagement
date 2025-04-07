@@ -3,6 +3,12 @@ using System.Runtime.CompilerServices;
 
 namespace ChildrenManagementClasses;
 
+public interface IPerson
+{
+    public Identity Identity { get; set; }
+    void ValidateProperty(object value, [CallerMemberName] string? propertyName = null);
+}
+
 /// <summary>
 /// class abstract
 /// Mother of Child, TrustedPerson and Educator

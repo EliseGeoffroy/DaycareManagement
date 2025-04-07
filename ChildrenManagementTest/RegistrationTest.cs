@@ -1,7 +1,7 @@
 namespace ChildrenManagementTest;
 
 [TestClass]
-public sealed class ChildTest
+public sealed class AddTrustedPeopleTest
 {
 
     private Child _child = new Child(new Identity(1234567894561, "Martin", "Hugo", Nationalities.Belgian), new DateTime(2024, 03, 30));
@@ -17,6 +17,7 @@ public sealed class ChildTest
     {
         _child.ContactList.Clear();
     }
+
 
     [TestMethod]
     public void AddATrustedPersonToAChildWithLessThan5People_ShouldBeOk()
@@ -39,4 +40,10 @@ public sealed class ChildTest
         var exception = Assert.ThrowsException<InvalidOperationException>(() => _child.AddATrustedPerson(_trustedPerson5));
         Assert.AreEqual("Vous ne pouvez pas renseigner plus de 5 contacts d'urgence pour votre enfant", exception.Message);
     }
+    
+}
+
+public class GroupTest{
+
+    
 }

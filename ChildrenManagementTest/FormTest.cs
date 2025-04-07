@@ -140,13 +140,7 @@ namespace ChildrenManagementTest
     {
         private Identity _identity = new(7894561237894L, "Oliveira", "Yasmine", Nationalities.Portuguese);
 
-        [AssemblyInitialize]
-        public static void AssemblyInitializeMethod(TestContext context)
-        {
-            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
-            mockDateTimeProvider.Setup(m => m.Today).Returns(new DateTime(2024, 4, 3));
-        }
-
+       
         #region RightCases
         [TestMethod]
         public void CorrectFormularChild_ShouldCreateCorrectChild()
@@ -192,6 +186,24 @@ namespace ChildrenManagementTest
             Utilities.InputDataTest(child, testSet);
 
             Assert.AreEqual(ageInMonth, child.AgeInMonth);
+
+        }
+
+        [DataTestMethod]
+        [DataRow(2022, 06, 23, ChildTypes.Kid, DisplayName = "Kid")]
+        [DataRow(2023, 06, 23, ChildTypes.Toddler, DisplayName = "Toddler")]
+        [DataRow(2025, 03, 23, ChildTypes.Baby, DisplayName = "Baby")]
+
+        public void ChildTypesTest(int year, int month, int day, ChildTypes childTypes)
+        {
+
+
+            string?[] testSet = [$"{day}/{month}/{year}", null];
+
+            Child child = new(_identity);
+            Utilities.InputDataTest(child, testSet);
+
+            Assert.AreEqual(childTypes, child.ChildType);
 
         }
 
