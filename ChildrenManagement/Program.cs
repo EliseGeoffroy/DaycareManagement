@@ -2,7 +2,8 @@
 using ChildrenManagementClasses;
 using General;
 
-List<Group> groupList = InitializeGroups();
+GroupList groupList = InitializeGroups();
+GroupList.JustOnePlaceAvailableEvent += (sender, childType) => System.Console.WriteLine($"Attention, il ne reste plus de place pour cette catégorie d'âge : {childType}");
 
 Identity childIdentity = new();
 Utilities.InputData<Identity>(childIdentity);
@@ -50,7 +51,7 @@ while (addATrustedPerson)
 
 try
 {
-    child.FindAGroup(groupList);
+    groupList.FindAGroup(child);
 }
 catch (InvalidOperationException ioe)
 {
@@ -61,7 +62,7 @@ System.Console.WriteLine(child);
 
 
 
-static List<Group> InitializeGroups()
+static GroupList InitializeGroups()
 {
     List<Educator> educatorList = [
         new Educator(new Identity(1472583693692,"DaSilva","Maria", Nationalities.Portuguese),ChildTypes.Baby),
@@ -69,13 +70,13 @@ static List<Group> InitializeGroups()
     new Educator(new Identity(1472583693694,"VanRichter","Anna", Nationalities.Luxembourgish),ChildTypes.Kid),
     new Educator(new Identity(1472583693695,"Schmidt","Klaus", Nationalities.German),ChildTypes.Baby),
     new Educator(new Identity(1472583693696,"Cacciatore","Nicola", Nationalities.Italian),ChildTypes.Toddler),
-    new Educator(new Identity(1472583693692,"Dujardin","Laurent", Nationalities.French),ChildTypes.Kid),
+    new Educator(new Identity(1472583693692,"Dujardin","Laurent", Nationalities.French),ChildTypes.Kid)
 ];
 
-    return [
+    return new GroupList([
         new Group("Les cacahouètes",10,ChildTypes.Baby,educatorList[0],educatorList[3]),
-        new Group("Les Nooooooon!",10,ChildTypes.Toddler,educatorList[1],educatorList[4]),
+        new Group("Les Nooooooon!",1,ChildTypes.Toddler,educatorList[1],educatorList[4]),
         new Group("Les Pourquoi ?",10,ChildTypes.Kid,educatorList[2],educatorList[5])
-    ];
+    ]);
 
 }

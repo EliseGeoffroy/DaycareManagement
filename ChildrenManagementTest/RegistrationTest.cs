@@ -1,3 +1,7 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualBasic;
+
 namespace ChildrenManagementTest;
 
 [TestClass]
@@ -40,10 +44,58 @@ public sealed class AddTrustedPeopleTest
         var exception = Assert.ThrowsException<InvalidOperationException>(() => _child.AddATrustedPerson(_trustedPerson5));
         Assert.AreEqual("Vous ne pouvez pas renseigner plus de 5 contacts d'urgence pour votre enfant", exception.Message);
     }
-    
+
 }
 
-public class GroupTest{
+[TestClass]
+public class GroupTest
+{
 
-    
+    private Group _groupBabyOK = new Group("Les cacahouètes", 10, ChildTypes.Baby, new Educator(new Identity(1472583693692, "DaSilva", "Maria", Nationalities.Portuguese), ChildTypes.Baby));
+    private Group _groupToddlerOK = new Group("Les Nooooooon!", 1, ChildTypes.Toddler, new Educator(new Identity(1472583693696, "Cacciatore", "Nicola", Nationalities.Italian), ChildTypes.Toddler));
+    private Group _groupKidOK = new Group("Les Pourquoi ?", 10, ChildTypes.Kid, new Educator(new Identity(1472583693694, "VanRichter", "Anna", Nationalities.Luxembourgish), ChildTypes.Kid));
+    private Group _groupWithJustOnePlace = new Group("La crevette", 1, ChildTypes.Baby, new Educator(new Identity(1472583693695, "Schmidt", "Klaus", Nationalities.German), ChildTypes.Baby));
+    private Group _groupWithNoMorePlace = new Group("Les coquins", 0, ChildTypes.Toddler, new Educator(new Identity(1472583693693, "Roussel", "Aurélie", Nationalities.Belgian), ChildTypes.Toddler));
+
+    [DataTestMethod]
+    [DataRow(25, 05, 2024, "Les cacahouètes", DisplayName = "Baby")]
+    [DataRow(25, 05, 2023, "Les Nooooooon!", DisplayName = "Toddler")]
+    [DataRow(25, 05, 2022, "Les Pourquoi ?", DisplayName = "Kid")]
+    public void FindAGroup_ShouldRegisterChildInRightGroup(int day, int month, int year, string groupName)
+    {
+
+        Child child = new(new Identity(1234567894561, "Poussin", "Côme", Nationalities.Luxembourgish), new DateTime(year, month, day));
+        GroupList groupList = new([_groupBabyOK, _groupToddlerOK, _groupKidOK]);
+
+        groupList.FindAGroup(child);
+
+        Assert.AreEqual(groupName, child.Group?.Name);
+
+    }
+
+    [TestMethod]
+    public void IfLastPlaceInAgeRange_ShouldSendAnEvent()
+    {
+        Child child = new(new Identity(1234567894561, "Poussin", "Côme", Nationalities.Luxembourgish), new DateTime(2024, 05, 25));
+        GroupList groupList = new([_groupWithJustOnePlace, _groupToddlerOK, _groupKidOK]);
+
+        bool eventRaised = false;
+
+        GroupList.JustOnePlaceAvailableEvent += (sender, childType) => eventRaised = true;
+
+        groupList.FindAGroup(child);
+
+        Assert.IsTrue(eventRaised);
+
+    }
+
+    [TestMethod]
+    public void IfNoPlaceInAgeRange_ShouldSendAnException()
+    {
+        Child child = new(new Identity(1234567894562, "VanBoost", "Alex", Nationalities.Belgian), new DateTime(2023, 05, 25));
+        GroupList groupList = new([_groupBabyOK, _groupWithNoMorePlace, _groupKidOK]);
+
+        Assert.ThrowsException<InvalidOperationException>(() => groupList.FindAGroup(child));
+    }
+
 }

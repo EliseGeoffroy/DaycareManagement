@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using ValidationBase;
 using General;
+using System.Transactions;
+using System;
 
 
 namespace ChildrenManagementClasses;
@@ -84,11 +86,11 @@ public class Child : Person
     {
         get
         {
-            if (AgeInMonth < (int)ChildTypes.Baby)
+            if (AgeInMonth < 12)
             {
                 return ChildTypes.Baby;
             }
-            else if (AgeInMonth < (int)ChildTypes.Toddler)
+            else if (AgeInMonth < 24)
             {
                 return ChildTypes.Toddler;
             }
@@ -152,19 +154,7 @@ public class Child : Person
 
     }
 
-    public void FindAGroup(List<Group> groupList)
-    {
-        Group? group = groupList.Where(g => g.ChildType == ChildType && g.CurrentCapacity < g.FullCapacity).FirstOrDefault();
-        if (group != null)
-        {
-            Group = group;
-            Group.AddAChild(this);
-        }
-        else
-        {
-            throw new InvalidOperationException("Aucune place n'est disponible pour cet âge. L'inscription est annulée.");
-        }
-    }
+
 
 }
 
