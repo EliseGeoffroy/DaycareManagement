@@ -16,6 +16,8 @@ public sealed class AddTrustedPeopleTest
     private TrustedPerson _trustedPerson4 = new TrustedPerson(new Identity(1234567894566, "Martin", "Fabiana", Nationalities.Portuguese), RelationshipToChild.Mother, "+35246788912", new DateTime(1989, 10, 25));
     private TrustedPerson _trustedPerson5 = new TrustedPerson(new Identity(1234567894567, "Van Houten", "Berthe", Nationalities.Belgian), RelationshipToChild.GodParent, "+3256895689", new DateTime(1992, 07, 25));
 
+
+
     [TestCleanup]
     public void TestCleanupMethod()
     {
@@ -51,21 +53,23 @@ public sealed class AddTrustedPeopleTest
 public class GroupTest
 {
 
-    private Group _groupBabyOK = new Group("Les cacahouètes", 10, ChildTypes.Baby, new Educator(new Identity(1472583693692, "DaSilva", "Maria", Nationalities.Portuguese), ChildTypes.Baby));
-    private Group _groupToddlerOK = new Group("Les Nooooooon!", 1, ChildTypes.Toddler, new Educator(new Identity(1472583693696, "Cacciatore", "Nicola", Nationalities.Italian), ChildTypes.Toddler));
+    private Group _groupBabyOK = new Group("Les crevettes", 10, ChildTypes.Baby, new Educator(new Identity(1472583693692, "DaSilva", "Maria", Nationalities.Portuguese), ChildTypes.Baby));
+    private Group _groupToddlerOK = new Group("Les Cascadeurs", 1, ChildTypes.Toddler, new Educator(new Identity(1472583693696, "Cacciatore", "Nicola", Nationalities.Italian), ChildTypes.Toddler));
     private Group _groupKidOK = new Group("Les Pourquoi ?", 10, ChildTypes.Kid, new Educator(new Identity(1472583693694, "VanRichter", "Anna", Nationalities.Luxembourgish), ChildTypes.Kid));
     private Group _groupWithJustOnePlace = new Group("La crevette", 1, ChildTypes.Baby, new Educator(new Identity(1472583693695, "Schmidt", "Klaus", Nationalities.German), ChildTypes.Baby));
     private Group _groupWithNoMorePlace = new Group("Les coquins", 0, ChildTypes.Toddler, new Educator(new Identity(1472583693693, "Roussel", "Aurélie", Nationalities.Belgian), ChildTypes.Toddler));
 
     [DataTestMethod]
-    [DataRow(25, 05, 2024, "Les cacahouètes", DisplayName = "Baby")]
-    [DataRow(25, 05, 2023, "Les Nooooooon!", DisplayName = "Toddler")]
+    [DataRow(25, 05, 2024, "Les crevettes", DisplayName = "Baby")]
+    [DataRow(25, 05, 2023, "Les Cascadeurs", DisplayName = "Toddler")]
     [DataRow(25, 05, 2022, "Les Pourquoi ?", DisplayName = "Kid")]
     public void FindAGroup_ShouldRegisterChildInRightGroup(int day, int month, int year, string groupName)
     {
 
         Child child = new(new Identity(1234567894561, "Poussin", "Côme", Nationalities.Luxembourgish), new DateTime(year, month, day));
+
         GroupList groupList = new([_groupBabyOK, _groupToddlerOK, _groupKidOK]);
+
 
         groupList.FindAGroup(child);
 
@@ -95,7 +99,19 @@ public class GroupTest
         Child child = new(new Identity(1234567894562, "VanBoost", "Alex", Nationalities.Belgian), new DateTime(2023, 05, 25));
         GroupList groupList = new([_groupBabyOK, _groupWithNoMorePlace, _groupKidOK]);
 
-        Assert.ThrowsException<InvalidOperationException>(() => groupList.FindAGroup(child));
+
+        var exception = Assert.ThrowsException<InvalidOperationException>(() => groupList.FindAGroup(child));
+        Assert.AreEqual("Aucune place n'est disponible pour cet âge. L'inscription est annulée.", exception.Message);
+    }
+
+    [TestMethod]
+    public void IfTryToAddChildInaGroupWithNoLeftPlaces_ShouldThrowAnEception()
+    {
+        Child child = new(new Identity(1234567894562, "VanBoost", "Alex", Nationalities.Belgian), new DateTime(2023, 05, 25));
+
+
+        var exception = Assert.ThrowsException<InvalidOperationException>(() => _groupWithNoMorePlace.AddAChild(child));
+        Assert.AreEqual("On ne peut plus ajouter d'enfants dans ce groupe.", exception.Message);
     }
 
 }

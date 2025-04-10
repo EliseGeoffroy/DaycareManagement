@@ -15,12 +15,12 @@ public static class Utilities
     /// </summary>
     /// <param name="birthDate"> DateTime date</param>
     /// <returns> int age in month</returns>
-    public static int CalculateAgeInMonth(DateTime birthDate)
+    public static int CalculateAgeInMonth(DateTime birthDate, DateTime todayDate)
     {
         int age = 0;
-        if (birthDate.Year == DateTime.Today.Year)
+        if (birthDate.Year == todayDate.Year)
         {
-            age = DateTime.Today.Month - birthDate.Month;
+            age = todayDate.Month - birthDate.Month;
 
         }
         else
@@ -28,11 +28,11 @@ public static class Utilities
             //Number of the months before next year
             age = 12 - birthDate.Month + 1;
             //Number of years between this next year and the beginning of the current one
-            age += 12 * (DateTime.Today.Year - (birthDate.Year + 1));
+            age += 12 * (todayDate.Year - (birthDate.Year + 1));
             //Number of month since the beginning of this year;
-            age += DateTime.Today.Month - 1;
+            age += todayDate.Month - 1;
         }
-        if (birthDate.Day > DateTime.Today.Day)
+        if (birthDate.Day > todayDate.Day)
         {
             age--;
         }

@@ -14,7 +14,7 @@ public interface IChild
     public string? PicturePath { get; set; }
 
 
-    public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate);
+    public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate, DateTime.Today);
     public List<TrustedPerson> ContactList { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ public interface IChild
 /// 1 ToString()
 /// AddATrustedPerson(TrustedPerson) : adds a TrustedPerson in the ContactList
 /// </summary>
-public class Child : Person
+public class Child : Person, IChild
 {
 
     #region Fields & Properties
@@ -79,7 +79,7 @@ public class Child : Person
         }
     }
 
-    public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate);
+    public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate, DateTime.Today);
     public List<TrustedPerson> ContactList { get; set; } = [];
 
     public ChildTypes ChildType
@@ -157,5 +157,7 @@ public class Child : Person
 
 
 }
+
+
 
 

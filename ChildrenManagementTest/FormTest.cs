@@ -140,7 +140,14 @@ namespace ChildrenManagementTest
     {
         private Identity _identity = new(7894561237894L, "Oliveira", "Yasmine", Nationalities.Portuguese);
 
-       
+        [TestInitialize]
+        public void TestInitializeMethod()
+        {
+            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(m => m.Today).Returns(new DateTime(2024, 4, 3));
+        }
+
+
         #region RightCases
         [TestMethod]
         public void CorrectFormularChild_ShouldCreateCorrectChild()
@@ -180,12 +187,11 @@ namespace ChildrenManagementTest
         {
 
 
-            string?[] testSet = [$"{day}/{month}/{year}", null];
+            DateTime birthDate = new(year, month, day);
+            DateTime refDate = new(2025, 04, 03);
+            int calculatedAge = Utilities.CalculateAgeInMonth(birthDate, refDate);
 
-            Child child = new(_identity);
-            Utilities.InputDataTest(child, testSet);
-
-            Assert.AreEqual(ageInMonth, child.AgeInMonth);
+            Assert.AreEqual(ageInMonth, calculatedAge);
 
         }
 

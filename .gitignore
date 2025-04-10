@@ -26,3 +26,9 @@ TestResults/
 
 # Fichiers de configuration de déploiement
 appsettings.Development.json
+
+# Méthodes génériques à construire pour éviter répétition du code
+testGenericity.cs
+
+#fichiers tests (en-dehors des fichiers de référence)
+ChildrenManagementTest/data/files/*.json

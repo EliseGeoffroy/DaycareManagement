@@ -15,7 +15,7 @@ public static class ValidationRules
         }
         else
         {
-            if (Utilities.CalculateAgeInMonth(date) > 4 * 12)
+            if (Utilities.CalculateAgeInMonth(date, DateTime.Today) > 4 * 12)
             {
                 return new ValidationResult("Votre enfant est trop âgé pour être gardé en crèche. Veuillez vous rapprocher du foyer de jour.");
             }
@@ -30,7 +30,7 @@ public static class ValidationRules
     {
 
 
-        if (Utilities.CalculateAgeInMonth(date) < 18 * 12)
+        if (Utilities.CalculateAgeInMonth(date, DateTime.Today) < 18 * 12)
         {
             return new ValidationResult("Seul un adulte peut venir récupérer l'enfant.");
         }

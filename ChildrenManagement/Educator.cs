@@ -27,18 +27,27 @@ public class GroupList
     public static event EventHandler<ChildTypes>? JustOnePlaceAvailableEvent;
     public List<Group> Groups { get; set; } = [];
 
-    private List<int> _nbPlaces = [0, 0, 0];
+    public List<int> NbPlaces { get; } = [0, 0, 0];
 
-
-    public GroupList(params Group[] groupList)
+    public GroupList()
     {
-        foreach (Group group in groupList)
+
+    }
+    public GroupList(params Group[] groups)
+    {
+        foreach (Group group in groups)
         {
             Groups.Add(group);
-
-            _nbPlaces[(int)group.ChildType] = group.AvailableCapacity;
         }
+        CalculatenbPlaces();
+    }
 
+    public void CalculatenbPlaces()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            NbPlaces[i] = Groups.Where(g => (int)g.ChildType == i).Sum(g => g.AvailableCapacity);
+        }
     }
 
     /// <summary>
@@ -50,7 +59,7 @@ public class GroupList
     /// 
     public void FindAGroup(Child child)
     {
-        if (_nbPlaces[(int)child.ChildType] == 0)
+        if (NbPlaces[(int)child.ChildType] == 0)
         {
             throw new InvalidOperationException("Aucune place n'est disponible pour cet âge. L'inscription est annulée.");
         }
@@ -61,9 +70,9 @@ public class GroupList
             {
                 child.Group = group;
                 group.AddAChild(child);
-                _nbPlaces[(int)child.ChildType]--;
+                NbPlaces[(int)child.ChildType]--;
             }
-            if (_nbPlaces[(int)child.ChildType] == 0)
+            if (NbPlaces[(int)child.ChildType] == 0)
             {
                 JustOnePlaceAvailableEvent?.Invoke(this, child.ChildType);
             }
@@ -89,7 +98,6 @@ public class GroupList
 /// 
 /// Methods :
 /// - AddAChild : add a Child in Children (throws an InvalidOperationException if the group is full)
-/// - AddSeveralChildren : add all Children into a Table in Children ( if the group is full,send back the number of children without a group)
 /// 
 /// </summary>
 
@@ -141,28 +149,11 @@ public class Group
             throw new InvalidOperationException("On ne peut plus ajouter d'enfants dans ce groupe.");
         }
     }
-    /// <summary>
-    ///  add all Children in a Table into Children
-    /// if the group is full,send back the number of children without a group
-    /// </summary>
-    /// <param name="children"></param>
-    public void AddSeveralChildren(List<Child> children)
+
+
+    public void AddAnEducator(Educator educator)
     {
-        int nbChildren = children.Count;
-        try
-        {
-            foreach (Child child in children)
-            {
-
-                AddAChild(child);
-                nbChildren--;
-
-            }
-        }
-        catch (InvalidOperationException ioe)
-        {
-            System.Console.WriteLine(ioe.Message + '\n' + $"{nbChildren} n'ont pas été enregistrés dans ce groupe.");
-        }
+        _educators.Add(educator);
     }
 }
 
