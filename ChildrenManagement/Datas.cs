@@ -1,7 +1,6 @@
 using ChildrenManagementClasses;
-using staticClasses;
 
-namespace ChildrenManagement;
+namespace staticClasses;
 
 /// <summary>
 /// Contains DictionaryForAllObjects (waiting a DB) :
@@ -20,20 +19,19 @@ namespace ChildrenManagement;
 /// </summary>
 public static class Datas
 {
+
     public static Dictionary<long, Educator> EducatorsDictionary { get; set; } = [];
     public static Dictionary<long, TrustedPerson> TrustedPeopleDictionary { get; set; } = [];
     public static Dictionary<long, Child> ChildrenDictionary { get; set; } = [];
 
     public static Dictionary<string, Group> GroupDictionary { get; set; } = [];
 
-    public static GroupList InitializeAllDatas()
+    public static void InitializeAllDatas()
     {
         InitializeEducators();
         InitializeTrustedPeople();
         InitializeChildren();
-        GroupList groupList = InitializeGroup();
-        groupList.CalculatenbPlaces();
-        return groupList;
+        InitializeGroups();
     }
 
     public static void InitializeEducators()
@@ -86,16 +84,10 @@ public static class Datas
 
     }
 
-    /// <summary>
-    /// This one has some specific features :
-    /// - it builds a GroupList object, in addition to Group objects, and calculate left places' number, and gets it back
-    ///   
-    /// </summary>
-    /// <returns></returns>
-    public static GroupList InitializeGroup()
+
+    public static void InitializeGroups()
     {
 
-        GroupList groupList = new();
         List<JSONGroup> jsonGroupsList = DAL.HandleFileInformation<JSONGroup>(DAL._groupFilePath);
 
         foreach (JSONGroup jsonGroup in jsonGroupsList)
@@ -112,13 +104,28 @@ public static class Datas
                 ChildrenDictionary[id].Group = group;
             }
             GroupDictionary.Add(group.Name, group);
-            groupList.Groups.Add(group);
-
         }
-        groupList.CalculatenbPlaces();
-        return groupList;
+
     }
 
+    public static void AddAnEntryPersonToDictionary<T>(Dictionary<long, T> dictionary, T entry) where T : Person
+    {
+        try
+        {
+            dictionary.Add(entry.Identity.Id, entry);
+        }
 
+        catch (ArgumentException)
+        {
+            if (!entry.Equals(dictionary[entry.Identity.Id]))
+            {
+                throw new ArgumentException("Une autre personne est enregistrée avec le même Id. Veuillez réitérez l'inscription en vérifiant le matricule.");
+            }
+            else
+            {
+                System.Console.WriteLine("La personne a déjà été enregistrée. Les informations précédentes sont conservées. Pour les modifier, merci d'aller sur l'onglet de modifications (Fonctionnalité à venir).");
+            }
+        }
+    }
 
 }

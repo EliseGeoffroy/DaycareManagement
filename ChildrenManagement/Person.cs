@@ -12,6 +12,11 @@ public interface IPerson
 /// <summary>
 /// class abstract
 /// Mother of Child, TrustedPerson and Educator
+/// Methods : 
+/// - ValidateProperty to permit validation in forms for heirs
+/// - Equals : check egality between two obj.
+/// -GetHashCode : required by VSCode, but for the moment, I don't know why or what is it...
+/// 
 /// </summary>
 /// <param name="identity"> Identity class (look below)</param>
 public abstract class Person(Identity identity)
@@ -24,6 +29,24 @@ public abstract class Person(Identity identity)
         ValidationContext context = new(this);
         context.MemberName = propertyName;
         Validator.ValidateProperty(value, context);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        bool equal = false;
+        if (obj is Person person)
+        {
+            if (Identity.Equals(person.Identity))
+            {
+                equal = true;
+            }
+        }
+        return equal;
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -43,7 +66,7 @@ public class Identity
 
 
     private long _id;
-    [Display(Prompt = "Matricule luxembourgeois (s'il y en a un')")]
+    [Display(Prompt = "Matricule luxembourgeois")]
     [RegularExpression(@"\d{13}", ErrorMessage = "Un matricule luxembourgeois doit comporter 13 chiffres.")]
     [Required(ErrorMessage = "Ce champ est obligatoire")]
     public long Id
@@ -110,6 +133,19 @@ public class Identity
         Nationality = nationality;
     }
 
+    public override bool Equals(object? obj)
+    {
+        bool equal = false;
+        if (obj is Identity identity)
+        {
+            if ((Id == identity.Id) && (Name == identity.Name) && (Firstname == identity.Firstname) && (Nationality == identity.Nationality))
+            {
+                equal = true;
+            }
+        }
+        return equal;
+    }
+
     public void ValidateProperty(object value, [CallerMemberName] string? propertyName = null)
     {
         ValidationContext context = new(this);
@@ -117,8 +153,11 @@ public class Identity
         Validator.ValidateProperty(value, context);
     }
 
-};
-
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+}
 public enum Nationalities
 {
     French, Luxembourgish, German, Belgian, Portuguese, Italian, OtherEuropean, NotEuropean

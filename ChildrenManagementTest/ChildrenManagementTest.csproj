@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
-    <Using Include="General" />
-    <Using Include="ChildrenManagementClasses" />
   </ItemGroup>
 
   <ItemGroup>

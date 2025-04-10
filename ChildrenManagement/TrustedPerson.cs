@@ -20,7 +20,7 @@ namespace ChildrenManagementClasses;
 public class TrustedPerson : Person
 {
     private RelationshipToChild _relationshipToChild;
-    [Display(Prompt = "Lien avec l'enfant : 0-Mère, 1-Père, 2-Frère, 3-Soeur, 4-Grand-Parent, 5-Tante, 6-Oncle, 7-Parrain/Marraine, Autre")]
+    [Display(Prompt = "Lien avec l'enfant : 0-Mère, 1-Père, 2-Frère, 3-Soeur, 4-Grand-Parent, 5-Tante, 6-Oncle, 7-Cousin(e), 8-Parrain/Marraine, 9-Autre")]
     [EnumDataType(typeof(RelationshipToChild), ErrorMessage = "Le numéro rentré ne correspond à aucune proposition")]
     [Required(ErrorMessage = "Ce champ est obligatoire.")]
     public RelationshipToChild RelationshipToChild

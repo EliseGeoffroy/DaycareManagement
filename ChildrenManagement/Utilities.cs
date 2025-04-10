@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using ChildrenManagementClasses;
 
-namespace General;
+namespace staticClasses;
 
 /// <summary>
 /// Toolkit for this project
@@ -101,11 +100,35 @@ public static class Utilities
                             property.SetValue(obj, newValue);
                         });
                 }
-
             }
 
 
         }
+    }
+
+    public static bool HandleUserAnswerToContinueRegistering(string answer, Action actionRegistering)
+    {
+        bool toContinue = true;
+        switch (answer)
+        {
+            case "O":
+            case "o":
+                actionRegistering();
+                break;
+            case "N":
+            case "n":
+                toContinue = false;
+                break;
+            default:
+                throw new ArgumentException("La saisie ne correspond ni à Oui (O/o), ni à Non (N/n). Veuillez entrer de nouveau votre réponse.");
+        }
+        return toContinue;
+    }
+
+    public static void ExitApplication()
+    {
+        DAL.RegisterAllInFilesAtTheEnd();
+        Environment.Exit(0);
     }
     #endregion
 

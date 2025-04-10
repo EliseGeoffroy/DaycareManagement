@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using General;
+using staticClasses;
 
 namespace ValidationBase;
 

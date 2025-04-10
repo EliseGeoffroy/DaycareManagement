@@ -9,9 +9,7 @@ public class AssemblyMethodsTest
     [AssemblyInitialize]
     public static void AssemblyInitializeMethod(TestContext context)
     {
-        //Initialization TodayDate
-
-
+        Directory.SetCurrentDirectory(@"C:\Users\geoff\Desktop\C#.Net\DaycareManagement\ChildrenManagementTest\data\files");
     }
 
 }
