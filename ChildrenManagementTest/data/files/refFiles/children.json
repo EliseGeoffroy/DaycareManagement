@@ -1,0 +1,12 @@
+[
+  {
+    "ID": 1234567894561,
+    "Name": "Martin",
+    "Firstname": "Amy",
+    "Nationality": 0,
+    "BirthDate": "2023-10-24T00:00:00",
+    "PicturePath": "https://cdn.pixabay.com/photo/2015/06/12/21/58/child-807547_640.jpg",
+    "GroupName": "Les Nooooooon!",
+    "TrustedPeopleIds": [7894561234562]
+  }
+]

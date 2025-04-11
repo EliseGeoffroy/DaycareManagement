@@ -1,0 +1,50 @@
+[
+  {
+    "ID": 1472583693692,
+    "Name": "DaSilva",
+    "Firstname": "Maria",
+    "Nationality": 4,
+    "PreferenceType": 0,
+    "PicturePath": null
+  },
+  {
+    "ID": 1472583693693,
+    "Name": "Roussel",
+    "Firstname": "Aurélie",
+    "Nationality": 3,
+    "PreferenceType": 1,
+    "PicturePath": null
+  },
+  {
+    "ID": 1472583693694,
+    "Name": "VanRichter",
+    "Firstname": "Anna",
+    "Nationality": 1,
+    "PreferenceType": 2,
+    "PicturePath": null
+  },
+  {
+    "ID": 1472583693695,
+    "Name": "Schmidt",
+    "Firstname": "Klaus",
+    "Nationality": 2,
+    "PreferenceType": 0,
+    "PicturePath": null
+  },
+  {
+    "ID": 1472583693696,
+    "Name": "Cacciatore",
+    "Firstname": "Nicola",
+    "Nationality": 5,
+    "PreferenceType": 1,
+    "PicturePath": null
+  },
+  {
+    "ID": 1472583693697,
+    "Name": "Dujardin",
+    "Firstname": "Laurent",
+    "Nationality": 0,
+    "PreferenceType": 2,
+    "PicturePath": null
+  }
+]

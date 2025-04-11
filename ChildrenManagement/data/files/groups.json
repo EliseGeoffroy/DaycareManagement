@@ -1,0 +1,34 @@
+[
+  {
+    "Name": "Les cacahouètes",
+    "FullCapacity": 10,
+    "CurrentCapacity": 0,
+    "ChildType": 0,
+    "EducatorsID": [
+      1472583693695
+    ],
+    "ChildrenID": []
+  },
+  {
+    "Name": "Les Nooooooon!",
+    "FullCapacity": 1,
+    "CurrentCapacity": 1,
+    "ChildType": 1,
+    "EducatorsID": [
+      1472583693696
+    ],
+    "ChildrenID": [
+      1234567894561
+    ]
+  },
+  {
+    "Name": "Les Pourquoi ?",
+    "FullCapacity": 10,
+    "CurrentCapacity": 0,
+    "ChildType": 2,
+    "EducatorsID": [
+      1472583693697
+    ],
+    "ChildrenID": []
+  }
+]

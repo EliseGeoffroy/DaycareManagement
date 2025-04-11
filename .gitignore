@@ -1,0 +1,34 @@
+# Fichiers binaires
+bin/
+obj/
+
+# Packages NuGet
+packages/
+
+# Fichiers de configuration utilisateur
+*.user
+*.suo
+
+# Cache ReSharper
+_ReSharper*/
+
+# VS Code
+.vscode/
+
+# Résultats de tests
+TestResults/
+
+# Fichiers de débogage
+*.pdb
+
+# Fichiers de sauvegarde
+*.bak
+
+# Fichiers de configuration de déploiement
+appsettings.Development.json
+
+# Méthodes génériques à construire pour éviter répétition du code
+testGenericity.cs
+
+#fichiers tests (en-dehors des fichiers de référence)
+ChildrenManagementTest/data/files/*.json
