@@ -1,8 +1,8 @@
 
-using ChildrenManagementClasses;
+using ChildrenManagement.Classes;
 
 
-namespace staticClasses;
+namespace ChildrenManagement.staticClasses;
 
 /// <summary>
 /// Class corresponding to Registrationpage
@@ -65,6 +65,7 @@ public static class Registration
         catch (ArgumentException ae)
         {
             System.Console.WriteLine(ae.Message);
+            _ = Utilities.ExitApplication();
         }
 
         return child;
@@ -130,6 +131,7 @@ public static class Registration
         catch (ArgumentException ae)
         {
             System.Console.WriteLine(ae.Message);
+            _ = Utilities.ExitApplication();
         }
 
         return trustedPerson;
@@ -148,7 +150,7 @@ public static class Registration
         catch (InvalidOperationException ioe)
         {
             System.Console.WriteLine(ioe.Message);
-            Utilities.ExitApplication();
+            _ = Utilities.ExitApplication();
         }
     }
 

@@ -5,8 +5,35 @@
     "Firstname": "Appolline",
     "Nationality": 0,
     "BirthDate": "2023-07-23T00:00:00",
+    "PicturePath": "https://cdn.pixabay.com/photo/2017/10/31/03/20/dominican-republic-2904164_640.jpg",
+    "GroupName": "Les Nooooooon!",
+    "TrustedPeopleIds": [
+      7894561234562
+    ]
+  },
+  {
+    "ID": 2583691472583,
+    "Name": "El Hassani",
+    "Firstname": "Nour",
+    "Nationality": 3,
+    "BirthDate": "2023-06-05T00:00:00",
+    "PicturePath": "https://cdn.pixabay.com/photo/2016/11/29/20/22/girl-1871104_640.jpg",
+    "GroupName": "Les Nooooooon!",
+    "TrustedPeopleIds": [
+      7894561239456
+    ]
+  },
+  {
+    "ID": 2023062302610,
+    "Name": "Geoffroy",
+    "Firstname": "Amélia",
+    "Nationality": 0,
+    "BirthDate": "2023-06-23T00:00:00",
     "PicturePath": "",
     "GroupName": "Les Nooooooon!",
-    "TrustedPeopleIds": [7894561234562]
+    "TrustedPeopleIds": [
+      1992100803132,
+      1234567894561
+    ]
   }
 ]

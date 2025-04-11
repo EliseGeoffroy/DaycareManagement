@@ -1,6 +1,6 @@
 using System.Text.Json;
-using ChildrenManagementClasses;
-using staticClasses;
+using ChildrenManagement.Classes;
+using ChildrenManagement.staticClasses;
 
 namespace ChildrenManagementTest;
 
@@ -14,7 +14,88 @@ public class DALTest
         Datas.EducatorsDictionary.Clear();
         Datas.TrustedPeopleDictionary.Clear();
         Datas.GroupDictionary.Clear();
+
+        foreach (string filepath in Directory.EnumerateFiles("pictures/", "*.jpg", SearchOption.AllDirectories))
+        {
+            File.Delete(filepath);
+        }
+
+
     }
+    #region DownloadPictures
+
+    private Child _child = new(new Identity(1234567894561, "Martin", "Amy", Nationalities.French), new DateTime(2023, 10, 24));
+    private Educator _educator = new(new Identity(1472583693692, "Deschamps", "Céleste", Nationalities.French), ChildTypes.Baby, "");
+
+    [TestMethod]
+    public async Task DownloadProfilePictureWithChildren_ShouldCreateAFileInChildren()
+    {
+        _child.PicturePath = "https://cdn.pixabay.com/photo/2017/10/31/03/20/dominican-republic-2904164_640.jpg";
+
+        (string pictureName, PersonPicturable person) = await DAL.DownloadProfilePicture(_child.PicturePath, _child);
+
+        string expectedPictureName = "profilePic_1234567894561_Martin-Amy.jpg";
+
+        Assert.AreEqual(expectedPictureName, pictureName);
+
+        Assert.IsTrue(Path.Exists(Path.Combine(DAL._childrenPicDirectoryPath, pictureName)));
+    }
+
+
+    [TestMethod]
+    public async Task DownloadProfilePictureWithEducator_ShouldCreateAFileInEducators()
+    {
+        _educator.PicturePath = "https://cdn.pixabay.com/photo/2017/03/02/20/25/woman-2112292_640.jpg";
+
+        (string pictureName, PersonPicturable person) = await DAL.DownloadProfilePicture(_educator.PicturePath, _educator);
+
+        string expectedPictureName = "profilePic_1472583693692_Deschamps-Céleste.jpg";
+
+        Assert.AreEqual(expectedPictureName, pictureName);
+
+        Assert.IsTrue(Path.Exists(Path.Combine(DAL._educatorsPicDirectoryPath, pictureName)));
+
+    }
+
+    [TestMethod]
+    public async Task DownloadProfilePictureWithEducator_ShouldChangeEducatorPicturePath()
+    {
+        _educator.PicturePath = "https://cdn.pixabay.com/photo/2017/03/02/20/25/woman-2112292_640.jpg";
+        Datas.EducatorsDictionary.Add(_educator.Identity.Id, _educator);
+
+        await DAL.DownloadAllPictures();
+
+        string expectedPictureName = "profilePic_1472583693692_Deschamps-Céleste.jpg";
+
+        Assert.AreEqual(expectedPictureName, Datas.EducatorsDictionary[1472583693692].PicturePath);
+
+    }
+
+    [TestMethod]
+    public void IfNoPicturePath_ShouldNotCreateTasksDownloading()
+    {
+
+        _child.PicturePath = "";
+
+        List<Task<(string, PersonPicturable)>> tasksList = DAL.CreateTaskDownloading(Datas.ChildrenDictionary);
+
+        Assert.AreEqual(0, tasksList.Count);
+
+    }
+
+    [TestMethod]
+    public void IfAllPicturesAlreadyDownloaded_ShouldNotCreateTasksDownloading()
+    {
+
+        _child.PicturePath = @"pictures\children\profilePic_1234567894561_Martin-Amy.jpg";
+
+        List<Task<(string, PersonPicturable)>> tasksList = DAL.CreateTaskDownloading(Datas.ChildrenDictionary);
+
+        Assert.AreEqual(0, tasksList.Count);
+
+    }
+
+    #endregion
 
     #region RegistrationIntoFile
     [TestMethod]

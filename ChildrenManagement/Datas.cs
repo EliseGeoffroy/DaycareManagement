@@ -1,6 +1,6 @@
-using ChildrenManagementClasses;
+using ChildrenManagement.Classes;
 
-namespace staticClasses;
+namespace ChildrenManagement.staticClasses;
 
 /// <summary>
 /// Contains DictionaryForAllObjects (waiting a DB) :

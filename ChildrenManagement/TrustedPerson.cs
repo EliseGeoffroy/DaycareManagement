@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using ValidationBase;
 
-namespace ChildrenManagementClasses;
+namespace ChildrenManagement.Classes;
 
 /// <summary>
 ///Adult who can pick up the child and whom we can contact
