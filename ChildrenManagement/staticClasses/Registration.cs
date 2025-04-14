@@ -13,7 +13,7 @@ public static class Registration
     /// <summary>
     /// Registers as many children as user desires
     /// </summary>
-    public static void Register()
+    public static async void Register()
     {
         Group.JustOnePlaceAvailableEvent += (sender, childType) => System.Console.WriteLine($"Attention, il ne reste plus de place pour cette catégorie d'âge : {childType}");
 
@@ -30,6 +30,7 @@ public static class Registration
                 System.Console.WriteLine(ae.Message);
             }
         }
+        await Navigation.ReturnHomePage();
     }
     /// <summary>
     /// Registers a child in 3 steps :
@@ -37,9 +38,9 @@ public static class Registration
     /// - Adds eventually TrustedPeople to the child
     /// - Finds a group for the child
     /// </summary>
-    public static void RegisterAChild()
+    public static async void RegisterAChild()
     {
-        Child child = RegisterChildInformations();
+        Child child = await RegisterChildInformationsAsync();
         AskToAddTrustedPeople(child);
         FindGroup(child);
     }
@@ -48,7 +49,7 @@ public static class Registration
     /// Retrieves child information by a form, create object and add it to dictionary
     /// </summary>
     /// <returns> created Child</returns>
-    public static Child RegisterChildInformations()
+    public static async Task<Child> RegisterChildInformationsAsync()
     {
         Identity childIdentity = new();
         Utilities.InputData<Identity>(childIdentity);
@@ -65,7 +66,7 @@ public static class Registration
         catch (ArgumentException ae)
         {
             System.Console.WriteLine(ae.Message);
-            _ = Utilities.ExitApplication();
+            await Navigation.ReturnHomePage();
         }
 
         return child;
@@ -97,9 +98,9 @@ public static class Registration
     /// Retrieve trustedPerson information and add it to child
     /// </summary>
     /// <param name="child"></param>
-    public static void AddATrustedPerson(Child child)
+    public static async void AddATrustedPerson(Child child)
     {
-        TrustedPerson trustedPerson = RegisterTrustedPeopleInformation();
+        TrustedPerson trustedPerson = await RegisterTrustedPeopleInformationAsync();
         try
         {
             child.AddATrustedPerson(trustedPerson);
@@ -116,7 +117,7 @@ public static class Registration
     /// Retrieve TrustedPeople information, create the object and add it to dictionary
     /// </summary>
     /// <returns></returns>
-    public static TrustedPerson RegisterTrustedPeopleInformation()
+    public static async Task<TrustedPerson> RegisterTrustedPeopleInformationAsync()
     {
         Identity adultIdentity = new();
         Utilities.InputData<Identity>(adultIdentity);
@@ -131,7 +132,7 @@ public static class Registration
         catch (ArgumentException ae)
         {
             System.Console.WriteLine(ae.Message);
-            _ = Utilities.ExitApplication();
+            await Navigation.ReturnHomePage();
         }
 
         return trustedPerson;
@@ -150,7 +151,7 @@ public static class Registration
         catch (InvalidOperationException ioe)
         {
             System.Console.WriteLine(ioe.Message);
-            _ = Utilities.ExitApplication();
+            _ = Navigation.ReturnHomePage();
         }
     }
 

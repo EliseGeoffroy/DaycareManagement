@@ -10,13 +10,14 @@ namespace ChildrenManagement.staticClasses;
 public static class DAL
 {
 
-    public const string _educatorFilePath = @"files\educators.json";
-    public const string _groupFilePath = @"files\groups.json";
-    public const string _trustedPeopleFilePath = @"files\trustedPeople.json";
-    public const string _childrenFilePath = @"files\children.json";
+    public const string EDUCATOR_FILEPATH = @"files\educators.json";
+    public const string GROUP_FILEPATH = @"files\groups.json";
+    public const string TRUSTEDPEOPLE_FILEPATH = @"files\trustedPeople.json";
+    public const string CHILDREN_FILEPATH = @"files\children.json";
 
-    public const string _childrenPicDirectoryPath = @"pictures\children";
-    public const string _educatorsPicDirectoryPath = @"pictures\educators";
+    public const string CHILDREN_PIC_DIRECTORY_PATH = @"pictures\children";
+    public const string EDUCATORS_PIC_DIRECTORY_PATH = @"pictures\educators";
+    public const string PIC_DIRECTORY_PATH = @"pictures";
 
     private readonly static HttpClient client = new();
 
@@ -61,7 +62,7 @@ public static class DAL
         {
             jsonGroupList.Add(TurnIntoJSONFormat.ConvertGroup(item.Value));
         }
-        WriteInformationIntoAFile(_groupFilePath, jsonGroupList);
+        WriteInformationIntoAFile(GROUP_FILEPATH, jsonGroupList);
 
     }
 
@@ -73,7 +74,7 @@ public static class DAL
         {
             jsonChildrenList.Add(TurnIntoJSONFormat.ConvertChild(item.Value));
         }
-        WriteInformationIntoAFile(_childrenFilePath, jsonChildrenList);
+        WriteInformationIntoAFile(CHILDREN_FILEPATH, jsonChildrenList);
 
     }
 
@@ -84,7 +85,7 @@ public static class DAL
         {
             jsonEducatorsList.Add(TurnIntoJSONFormat.ConvertEducator(item.Value));
         }
-        WriteInformationIntoAFile(_educatorFilePath, jsonEducatorsList);
+        WriteInformationIntoAFile(EDUCATOR_FILEPATH, jsonEducatorsList);
     }
     public static void RegisterTrustedPeopleInAFile()
     {
@@ -93,7 +94,7 @@ public static class DAL
         {
             jsonTrustedPeopleList.Add(TurnIntoJSONFormat.ConvertTrustedPerson(item.Value));
         }
-        WriteInformationIntoAFile(_trustedPeopleFilePath, jsonTrustedPeopleList);
+        WriteInformationIntoAFile(TRUSTEDPEOPLE_FILEPATH, jsonTrustedPeopleList);
     }
 
     public static async Task DownloadAllPictures()
@@ -147,7 +148,7 @@ public static class DAL
         foreach (KeyValuePair<long, T> keyValuePair in dictionary)
         {
             PersonPicturable person = keyValuePair.Value;
-            if ((person.PicturePath != "") && !System.Text.RegularExpressions.Regex.IsMatch(person.PicturePath, @"^picture\/(educators|children)\/profilePic-"))
+            if ((person.PicturePath != "") && !System.Text.RegularExpressions.Regex.IsMatch(person.PicturePath, @"^profilePic_"))
             {
 
                 var task = DownloadProfilePicture(person.PicturePath, person);
@@ -172,8 +173,8 @@ public static class DAL
         string pictureName = $"profilePic_{person.Identity.Id}_{person.Identity.Name}-{person.Identity.Firstname}.jpg";
         string directoryPath;
 
-        if (person is Child) directoryPath = _childrenPicDirectoryPath;
-        else directoryPath = _educatorsPicDirectoryPath;
+        directoryPath = (person is Child) ? CHILDREN_PIC_DIRECTORY_PATH : EDUCATORS_PIC_DIRECTORY_PATH;
+
 
         string picturePath = Path.Combine(directoryPath, pictureName);
 
@@ -181,6 +182,21 @@ public static class DAL
         await ImageExtensions.SaveAsJpegAsync(picture, fs);
 
         return (pictureName, person);
+    }
+
+    public static string RegisterHTMLIntoAFile(string HTML, string groupName)
+    {
+        using var writer = new StringWriter();
+        writer.WriteLine(HTML);
+        string filename = HTMLAbstractFileName(groupName);
+        File.WriteAllText(Path.Combine("abstracts", "group", filename), writer.ToString());
+
+        return filename;
+    }
+
+    public static string HTMLAbstractFileName(string groupName)
+    {
+        return $"Extraction_{groupName.Replace(" ", "-")}_{DateTime.Now:yyyyMMdd-HHmmss}.html";
     }
 
 }

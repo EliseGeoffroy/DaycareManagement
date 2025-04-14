@@ -12,15 +12,17 @@
   {
     "Name": "Les Nooooooon!",
     "FullCapacity": 5,
-    "CurrentCapacity": 3,
+    "CurrentCapacity": 4,
     "ChildType": 1,
     "EducatorsID": [
-      1472583693696
+      1472583693696,
+      1472583693693
     ],
     "ChildrenID": [
       1234567894561,
       2583691472583,
-      2023062302610
+      2023082402610,
+      1234567891230
     ]
   },
   {

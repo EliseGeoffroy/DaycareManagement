@@ -1,0 +1,68 @@
+@import url("general-style.css");
+
+.educators {
+    height:24;
+    justify-content: space-around;
+}
+h2{
+    width:30%
+}
+.educator {
+    justify-content: center;
+    width:30%;
+    margin-top:2%;
+}
+.child{
+    margin-top:2%;
+    width:50%;
+}
+.img {
+    height:12rem;
+    width:20rem;
+    display: flex;
+    justify-content: center;
+
+}
+img {
+    max-height: 12rem;
+    width:auto;
+}
+
+header {
+    font-size: larger;
+    background-color: var(--bandColor);
+    color:white;
+    border:var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    justify-content: space-evenly;
+    text-shadow: var(--text-shadow);
+    padding : 0 10%;
+}
+
+.name,.firstname,.birthdate,.age{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 5px;
+}
+
+.firstname {
+    font-size: larger;
+    font-weight: 900;
+    color: var(--lightViolet);
+}
+
+.descr{
+    width:100%;
+    margin-left:5%;
+}
+.info {
+    margin-left:5%
+}
+
+.children {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    
+}

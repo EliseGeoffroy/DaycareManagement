@@ -7,7 +7,7 @@ Directory.SetCurrentDirectory(@"C:\Users\geoff\Desktop\C#.Net\DaycareManagement\
 
 Datas.InitializeAllDatas();
 
-Registration.Register();
+Navigation.DisplayHomePage();
 
 await Utilities.ExitApplication();
 
