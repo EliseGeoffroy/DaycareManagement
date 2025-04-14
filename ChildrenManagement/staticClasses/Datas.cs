@@ -1,6 +1,6 @@
-using ChildrenManagementClasses;
+using ChildrenManagement.Classes;
 
-namespace staticClasses;
+namespace ChildrenManagement.staticClasses;
 
 /// <summary>
 /// Contains DictionaryForAllObjects (waiting a DB) :
@@ -36,7 +36,7 @@ public static class Datas
 
     public static void InitializeEducators()
     {
-        List<JSONEducator> jsonEducatorsList = DAL.HandleFileInformation<JSONEducator>(DAL._educatorFilePath);
+        List<JSONEducator> jsonEducatorsList = DAL.HandleFileInformation<JSONEducator>(DAL.EDUCATOR_FILEPATH);
 
         foreach (JSONEducator jsonEducator in jsonEducatorsList)
         {
@@ -52,7 +52,7 @@ public static class Datas
 
     public static void InitializeTrustedPeople()
     {
-        List<JSONTrustedPerson> jsonTrustedPeopleList = DAL.HandleFileInformation<JSONTrustedPerson>(DAL._trustedPeopleFilePath);
+        List<JSONTrustedPerson> jsonTrustedPeopleList = DAL.HandleFileInformation<JSONTrustedPerson>(DAL.TRUSTEDPEOPLE_FILEPATH);
 
         foreach (JSONTrustedPerson jsonTrustedPerson in jsonTrustedPeopleList)
         {
@@ -68,7 +68,7 @@ public static class Datas
 
     public static void InitializeChildren()
     {
-        List<JSONChild> jsonChildrenList = DAL.HandleFileInformation<JSONChild>(DAL._childrenFilePath);
+        List<JSONChild> jsonChildrenList = DAL.HandleFileInformation<JSONChild>(DAL.CHILDREN_FILEPATH);
 
         foreach (JSONChild jsonChild in jsonChildrenList)
         {
@@ -88,7 +88,7 @@ public static class Datas
     public static void InitializeGroups()
     {
 
-        List<JSONGroup> jsonGroupsList = DAL.HandleFileInformation<JSONGroup>(DAL._groupFilePath);
+        List<JSONGroup> jsonGroupsList = DAL.HandleFileInformation<JSONGroup>(DAL.GROUP_FILEPATH);
 
         foreach (JSONGroup jsonGroup in jsonGroupsList)
         {

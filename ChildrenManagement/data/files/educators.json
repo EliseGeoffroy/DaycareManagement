@@ -5,7 +5,7 @@
     "Firstname": "Maria",
     "Nationality": 4,
     "PreferenceType": 0,
-    "PicturePath": null
+    "PicturePath": "profilePic_1472583693692_DaSilva-Maria.jpg"
   },
   {
     "ID": 1472583693693,
@@ -13,7 +13,7 @@
     "Firstname": "Aurélie",
     "Nationality": 3,
     "PreferenceType": 1,
-    "PicturePath": null
+    "PicturePath": "profilePic_1472583693693_Roussel-Aurélie.jpg"
   },
   {
     "ID": 1472583693694,
@@ -21,7 +21,7 @@
     "Firstname": "Anna",
     "Nationality": 1,
     "PreferenceType": 2,
-    "PicturePath": null
+    "PicturePath": "profilePic_1472583693694_VanRichter-Anna.jpg"
   },
   {
     "ID": 1472583693695,
@@ -29,7 +29,7 @@
     "Firstname": "Klaus",
     "Nationality": 2,
     "PreferenceType": 0,
-    "PicturePath": null
+    "PicturePath": "profilePic_1472583693695_Schmidt-Klaus.jpg"
   },
   {
     "ID": 1472583693696,
@@ -37,7 +37,7 @@
     "Firstname": "Nicola",
     "Nationality": 5,
     "PreferenceType": 1,
-    "PicturePath": null
+    "PicturePath": "profilePic_1472583693696_Cacciatore-Nicola.jpg"
   },
   {
     "ID": 1472583693697,
@@ -45,6 +45,6 @@
     "Firstname": "Laurent",
     "Nationality": 0,
     "PreferenceType": 2,
-    "PicturePath": null
+    "PicturePath": "profilePic_1472583693697_Dujardin-Laurent.jpg"
   }
 ]

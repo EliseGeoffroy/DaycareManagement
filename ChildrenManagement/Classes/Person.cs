@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace ChildrenManagementClasses;
+namespace ChildrenManagement.Classes;
 
 public interface IPerson
 {
@@ -15,7 +15,7 @@ public interface IPerson
 /// Methods : 
 /// - ValidateProperty to permit validation in forms for heirs
 /// - Equals : check egality between two obj.
-/// -GetHashCode : required by VSCode, but for the moment, I don't know why or what is it...
+/// -GetHashCode :
 /// 
 /// </summary>
 /// <param name="identity"> Identity class (look below)</param>
@@ -33,20 +33,42 @@ public abstract class Person(Identity identity)
 
     public override bool Equals(object? obj)
     {
-        bool equal = false;
-        if (obj is Person person)
-        {
-            if (Identity.Equals(person.Identity))
-            {
-                equal = true;
-            }
-        }
-        return equal;
+        return obj is Person person && Identity.Equals(person.Identity);
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return Identity.GetHashCode();
+    }
+}
+
+public class PersonPicturable : Person
+{
+    private string _picturePath = string.Empty;
+
+    [DataType(DataType.ImageUrl, ErrorMessage = "L'url n'est pas valide.")]
+    [Display(Prompt = "Lien vers la photo de l'enfant")]
+    public string PicturePath
+    {
+        get => _picturePath;
+        set
+        {
+            if (value != null)
+            {
+                ValidateProperty(value);
+                _picturePath = value;
+            }
+
+        }
+    }
+
+    public PersonPicturable(Identity identity, string picturePath) : base(identity)
+    {
+        PicturePath = picturePath;
+    }
+
+    public PersonPicturable(Identity identity) : base(identity)
+    {
     }
 }
 
@@ -60,6 +82,8 @@ public abstract class Person(Identity identity)
 /// 
 /// 2 constructors (one empty, one with all the above properties)
 /// method ValidateProperty which permits validation with attributes in a Form
+/// Equals
+/// GetHashCode
 /// </summary>
 public class Identity
 {
@@ -155,7 +179,7 @@ public class Identity
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return Id.GetHashCode() * 13 + Name.GetHashCode() * 17 + Firstname.GetHashCode() * 23 + Nationality.GetHashCode() * 31;
     }
 }
 public enum Nationalities
@@ -163,3 +187,4 @@ public enum Nationalities
     French, Luxembourgish, German, Belgian, Portuguese, Italian, OtherEuropean, NotEuropean
 }
 
+public enum PersonType { Child, Educator, TrustedPerson };

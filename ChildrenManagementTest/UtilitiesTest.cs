@@ -1,7 +1,8 @@
-using staticClasses;
+using ChildrenManagement.staticClasses;
 
 namespace ChildrenManagementTest;
 
+[TestClass]
 public class UtilitiesTest
 {
 

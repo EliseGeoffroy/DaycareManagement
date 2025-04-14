@@ -1,15 +1,15 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
-using staticClasses;
+using ChildrenManagement.staticClasses;
 
-Directory.SetCurrentDirectory(@"C:\Users\geoff\Desktop\C#.Net\DaycareManagement\ChildrenManagement\data\files");
+Directory.SetCurrentDirectory(@"C:\Users\geoff\Desktop\C#.Net\DaycareManagement\ChildrenManagement\data");
 
 Datas.InitializeAllDatas();
 
-Registration.Register();
+Navigation.DisplayHomePage();
 
-Utilities.ExitApplication();
+await Utilities.ExitApplication();
 
 
 

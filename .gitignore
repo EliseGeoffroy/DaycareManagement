@@ -32,3 +32,6 @@ testGenericity.cs
 
 #fichiers tests (en-dehors des fichiers de référence)
 ChildrenManagementTest/data/files/*.json
+
+#fichiers d'Extraction
+*.html

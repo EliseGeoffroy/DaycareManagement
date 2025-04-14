@@ -1,6 +1,6 @@
 
-using ChildrenManagementClasses;
-using staticClasses;
+using ChildrenManagement.Classes;
+using ChildrenManagement.staticClasses;
 
 namespace ChildrenManagementTest;
 

@@ -1,9 +1,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using ChildrenManagement;
 
-namespace ChildrenManagementClasses;
+namespace ChildrenManagement.Classes;
 
 /// <summary>
 /// Educator
@@ -11,11 +10,19 @@ namespace ChildrenManagementClasses;
 /// <param name="identity"> Identituy (Id, Name, Firstname, Nationality)</param>
 /// <param name="preferenceType">ChildType</param>
 /// <param name="picturePath"> string url to educator picture, can be null</param>
-public class Educator(Identity identity, ChildTypes preferenceType, string? picturePath = null) : Person(identity)
+public class Educator : PersonPicturable
 {
-    public string? PicturePath { get; set; } = picturePath;
+    public ChildTypes PreferenceType { get; set; }
 
-    public ChildTypes PreferenceType { get; set; } = preferenceType;
+    public Educator(Identity identity, ChildTypes preferenceType) : base(identity)
+    {
+        PreferenceType = preferenceType;
+    }
+
+    public Educator(Identity identity, ChildTypes preferenceType, string picturePath) : base(identity, picturePath)
+    {
+        PreferenceType = preferenceType;
+    }
 
     public override string ToString()
     {

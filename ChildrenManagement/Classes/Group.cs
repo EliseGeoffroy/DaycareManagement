@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
-using staticClasses;
+using ChildrenManagement.staticClasses;
 
-namespace ChildrenManagementClasses;
+namespace ChildrenManagement.Classes;
 
 /// <summary>
 /// Children grouped by age, supervised by several Educators
@@ -95,6 +95,16 @@ public class Group
     {
         if (Datas.GroupDictionary.Values.Where(g => g.ChildType == child.ChildType).Sum(g => g.AvailableCapacity) == 0)
         {
+
+            Datas.ChildrenDictionary.Remove(child.Identity.Id);
+            if (child.ContactList.Any())
+            {
+                foreach (TrustedPerson trustedPerson in child.ContactList)
+                {
+                    Datas.TrustedPeopleDictionary.Remove(trustedPerson.Identity.Id);
+                }
+            }
+
             throw new InvalidOperationException("Aucune place n'est disponible pour cet âge. L'inscription est annulée.");
         }
         else

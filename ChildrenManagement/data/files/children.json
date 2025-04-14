@@ -5,8 +5,47 @@
     "Firstname": "Appolline",
     "Nationality": 0,
     "BirthDate": "2023-07-23T00:00:00",
+    "PicturePath": "profilePic_1234567894561_Geoffroy-Appolline.jpg",
+    "GroupName": "Les Nooooooon!",
+    "TrustedPeopleIds": [
+      7894561234562
+    ]
+  },
+  {
+    "ID": 2583691472583,
+    "Name": "El Hassani",
+    "Firstname": "Nour",
+    "Nationality": 3,
+    "BirthDate": "2023-06-05T00:00:00",
+    "PicturePath": "profilePic_2583691472583_El Hassani-Nour.jpg",
+    "GroupName": "Les Nooooooon!",
+    "TrustedPeopleIds": [
+      7894561239456
+    ]
+  },
+  {
+    "ID": 2023082402610,
+    "Name": "Becquart",
+    "Firstname": "Amélia",
+    "Nationality": 0,
+    "BirthDate": "2023-08-24T00:00:00",
     "PicturePath": "",
     "GroupName": "Les Nooooooon!",
-    "TrustedPeopleIds": [7894561234562]
+    "TrustedPeopleIds": [
+      1992100803236,
+      1234567894561
+    ]
+  },
+  {
+    "ID": 1234567891230,
+    "Name": "VanHoot",
+    "Firstname": "Alex",
+    "Nationality": 3,
+    "BirthDate": "2023-09-25T00:00:00",
+    "PicturePath": "profilePic_1234567891230_VanHoot-Alex.jpg",
+    "GroupName": "Les Nooooooon!",
+    "TrustedPeopleIds": [
+      5461237893602
+    ]
   }
 ]
