@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
-using staticClasses;
+using ChildrenManagement.staticClasses;
 using ValidationBase;
 
-namespace ChildrenManagementClasses;
+namespace ChildrenManagement.Classes;
 
 public interface IChild
 {
     public DateTime BirthDate { get; set; }
 
-    public string? PicturePath { get; set; }
+    public string PicturePath { get; set; }
 
 
     public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate, DateTime.Today);
@@ -38,7 +38,7 @@ public interface IChild
 /// 1 ToString()
 /// AddATrustedPerson(TrustedPerson) : adds a TrustedPerson in the ContactList
 /// </summary>
-public class Child : Person, IChild
+public class Child : PersonPicturable, IChild
 {
 
     #region Fields & Properties
@@ -58,23 +58,6 @@ public class Child : Person, IChild
         }
     }
 
-    private string? _picturePath;
-
-    [DataType(DataType.ImageUrl, ErrorMessage = "L'url n'est pas valide.")]
-    [Display(Prompt = "Lien vers la photo de l'enfant")]
-    public string? PicturePath
-    {
-        get => _picturePath;
-        set
-        {
-            if (value != null)
-            {
-                ValidateProperty(value);
-                _picturePath = value;
-            }
-
-        }
-    }
 
     public int AgeInMonth => Utilities.CalculateAgeInMonth(BirthDate, DateTime.Today);
     public List<TrustedPerson> ContactList { get; set; } = [];
@@ -102,10 +85,13 @@ public class Child : Person, IChild
 
     #endregion
 
-    public Child(Identity identity, DateTime birthDate, string? picturePath = null) : base(identity)
+    public Child(Identity identity, DateTime birthDate, string picturePath) : base(identity, picturePath)
     {
         BirthDate = birthDate;
-        PicturePath = picturePath;
+    }
+    public Child(Identity identity, DateTime birthDate) : base(identity)
+    {
+        BirthDate = birthDate;
     }
 
     public Child(Identity identity) : base(identity) { }

@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Threading.Tasks;
 
-namespace staticClasses;
+namespace ChildrenManagement.staticClasses;
 
 /// <summary>
 /// Toolkit for this project
@@ -125,9 +126,11 @@ public static class Utilities
         return toContinue;
     }
 
-    public static void ExitApplication()
+    public static async Task ExitApplication()
     {
+        await DAL.DownloadAllPictures();
         DAL.RegisterAllInFilesAtTheEnd();
+
         Environment.Exit(0);
     }
     #endregion

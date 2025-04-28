@@ -1,5 +1,5 @@
-using ChildrenManagementClasses;
-using staticClasses;
+using ChildrenManagement.Classes;
+using ChildrenManagement.staticClasses;
 
 namespace ChildrenManagementTest;
 
@@ -14,11 +14,11 @@ public class DatasTest
         Datas.TrustedPeopleDictionary.Clear();
         Datas.GroupDictionary.Clear();
 
-        List<string> filesPath = Directory.EnumerateFiles("refFiles/").ToList();
+        List<string> filesPath = Directory.EnumerateFiles("files/refFiles/").ToList();
 
         foreach (string path in filesPath)
         {
-            File.Copy(path, Path.GetFileName(path), true);
+            File.Copy(path, Path.Combine("files", Path.GetFileName(path)), true);
         }
     }
 

@@ -1,6 +1,6 @@
 using System.Reflection;
-using staticClasses;
-using ChildrenManagementClasses;
+using ChildrenManagement.staticClasses;
+using ChildrenManagement.Classes;
 
 namespace ChildrenManagementTest;
 

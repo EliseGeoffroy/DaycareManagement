@@ -1,6 +1,7 @@
 using System.Text.Json;
-using ChildrenManagementClasses;
-using staticClasses;
+using System.Text.RegularExpressions;
+using ChildrenManagement.Classes;
+using ChildrenManagement.staticClasses;
 
 namespace ChildrenManagementTest;
 
@@ -14,7 +15,95 @@ public class DALTest
         Datas.EducatorsDictionary.Clear();
         Datas.TrustedPeopleDictionary.Clear();
         Datas.GroupDictionary.Clear();
+
+        foreach (string filepath in Directory.EnumerateFiles("pictures/", "*.jpg", SearchOption.AllDirectories))
+        {
+            File.Delete(filepath);
+        }
+
+        foreach (string filepath in Directory.EnumerateFiles("abstracts", "*.html", SearchOption.AllDirectories))
+        {
+            File.Delete(filepath);
+        }
+
+
     }
+    #region DownloadPictures
+
+    private Child _child = new(new Identity(1234567894561, "Martin", "Amy", Nationalities.French), new DateTime(2023, 10, 24));
+    private Educator _educator = new(new Identity(1472583693692, "Deschamps", "Céleste", Nationalities.French), ChildTypes.Baby, "");
+
+    [TestMethod]
+    public async Task DownloadProfilePictureWithChildren_ShouldCreateAFileInChildren()
+    {
+        _child.PicturePath = "https://cdn.pixabay.com/photo/2017/10/31/03/20/dominican-republic-2904164_640.jpg";
+
+        (string pictureName, PersonPicturable person) = await DAL.DownloadProfilePicture(_child.PicturePath, _child);
+
+        string expectedPictureName = "profilePic_1234567894561_Martin-Amy.jpg";
+
+        Assert.AreEqual(expectedPictureName, pictureName);
+
+        Assert.IsTrue(Path.Exists(Path.Combine(DAL.CHILDREN_PIC_DIRECTORY_PATH, pictureName)));
+    }
+
+
+    [TestMethod]
+    public async Task DownloadProfilePictureWithEducator_ShouldCreateAFileInEducators()
+    {
+        _educator.PicturePath = "https://cdn.pixabay.com/photo/2017/03/02/20/25/woman-2112292_640.jpg";
+
+        (string pictureName, PersonPicturable person) = await DAL.DownloadProfilePicture(_educator.PicturePath, _educator);
+
+        string expectedPictureName = "profilePic_1472583693692_Deschamps-Céleste.jpg";
+
+        Assert.AreEqual(expectedPictureName, pictureName);
+
+        Assert.IsTrue(Path.Exists(Path.Combine(DAL.EDUCATORS_PIC_DIRECTORY_PATH, pictureName)));
+
+    }
+
+    [TestMethod]
+    public async Task DownloadProfilePictureWithEducator_ShouldChangeEducatorPicturePath()
+    {
+        _educator.PicturePath = "https://cdn.pixabay.com/photo/2017/03/02/20/25/woman-2112292_640.jpg";
+        Datas.EducatorsDictionary.Add(_educator.Identity.Id, _educator);
+
+        await DAL.DownloadAllPictures();
+
+        string expectedPictureName = "profilePic_1472583693692_Deschamps-Céleste.jpg";
+
+        Assert.AreEqual(expectedPictureName, Datas.EducatorsDictionary[1472583693692].PicturePath);
+
+    }
+
+    [TestMethod]
+    public void IfNoPicturePath_ShouldNotCreateTasksDownloading()
+    {
+
+        _child.PicturePath = "";
+        Datas.ChildrenDictionary.Add(_child.Identity.Id, _child);
+
+        List<Task<(string, PersonPicturable)>> tasksList = DAL.CreateTaskDownloading(Datas.ChildrenDictionary);
+
+        Assert.AreEqual(0, tasksList.Count);
+
+    }
+
+    [TestMethod]
+    public void IfAllPicturesAlreadyDownloaded_ShouldNotCreateTasksDownloading()
+    {
+
+        _child.PicturePath = "profilePic_1234567894561_Martin-Amy.jpg";
+        Datas.ChildrenDictionary.Add(_child.Identity.Id, _child);
+
+        List<Task<(string, PersonPicturable)>> tasksList = DAL.CreateTaskDownloading(Datas.ChildrenDictionary);
+
+        Assert.AreEqual(0, tasksList.Count);
+
+    }
+
+    #endregion
 
     #region RegistrationIntoFile
     [TestMethod]
@@ -24,7 +113,7 @@ public class DALTest
         Datas.EducatorsDictionary.Add(1472583693692, educator);
 
         DAL.RegisterEducatorsInAFile();
-        string text = File.ReadAllText(DAL._educatorFilePath);
+        string text = File.ReadAllText(DAL.EDUCATOR_FILEPATH);
         var contenu = JsonSerializer.Deserialize<List<JSONEducator>>(text) ?? [];
 
         Assert.AreEqual(1, contenu.Count);
@@ -42,7 +131,7 @@ public class DALTest
         Datas.TrustedPeopleDictionary.Add(7894561234562, trustedPerson);
 
         DAL.RegisterTrustedPeopleInAFile();
-        string text = File.ReadAllText(DAL._trustedPeopleFilePath);
+        string text = File.ReadAllText(DAL.TRUSTEDPEOPLE_FILEPATH);
         var contenu = JsonSerializer.Deserialize<List<JSONTrustedPerson>>(text) ?? [];
 
         Assert.AreEqual(1, contenu.Count);
@@ -66,7 +155,7 @@ public class DALTest
         Datas.ChildrenDictionary.Add(1234567894561, child);
 
         DAL.RegisterChildrenInAFile();
-        string text = File.ReadAllText(DAL._childrenFilePath);
+        string text = File.ReadAllText(DAL.CHILDREN_FILEPATH);
         var contenu = JsonSerializer.Deserialize<List<JSONChild>>(text) ?? [];
 
         Assert.AreEqual(1, contenu.Count);
@@ -90,12 +179,12 @@ public class DALTest
         Child child = new(new Identity(1234567894561, "Martin", "Amy", Nationalities.French), new DateTime(2023, 10, 24), "");
         Datas.ChildrenDictionary.Add(1234567894561, child);
 
-        Group group = new("Les pouet-pouet", 10, ChildTypes.Toddler, educator);
+        ChildrenManagement.Classes.Group group = new("Les pouet-pouet", 10, ChildTypes.Toddler, educator);
         group.AddAChild(child);
         Datas.GroupDictionary.Add("Les pouet-pouet", group);
 
         DAL.RegisterGroupsInAFile();
-        string text = File.ReadAllText(DAL._groupFilePath);
+        string text = File.ReadAllText(DAL.GROUP_FILEPATH);
         var contenu = JsonSerializer.Deserialize<List<JSONGroup>>(text) ?? [];
 
         Assert.AreEqual(1, contenu.Count);
@@ -110,4 +199,38 @@ public class DALTest
     }
 
     #endregion
+
+    #region HTMLAbstractRegistration
+    private const string HTML_EXAMPLE = """
+        <html>
+        </html>
+        """;
+
+    private static ChildrenManagement.Classes.Group _group = new("Les pouet-pouet", 10, ChildTypes.Toddler);
+
+
+    [TestMethod]
+    public void RegisterHTMLIntoAFile_ShouldCreateAFileWithRightName()
+    {
+
+        string filename = DAL.RegisterHTMLIntoAFile(HTML_EXAMPLE, _group.Name);
+        var match = Regex.Match(filename, @"Extraction_Les-pouet-pouet_(?<today>\d{8})-\d{6}.html");
+
+        Assert.IsTrue(match.Success);
+        Assert.AreEqual($"{DateTime.Today:yyyyMMdd}", match.Groups["today"].Value);
+
+    }
+
+    [TestMethod]
+    public void RegisterHTMLIntoAFile_ShouldCreateTheFileInTheRightDirectory()
+    {
+
+        string filename = DAL.RegisterHTMLIntoAFile(HTML_EXAMPLE, _group.Name);
+
+        Assert.IsTrue(Path.Exists(Path.Combine("abstracts", "group", filename)));
+
+    }
+    #endregion
+
+
 }

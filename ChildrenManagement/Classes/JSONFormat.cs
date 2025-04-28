@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace ChildrenManagementClasses;
+namespace ChildrenManagement.Classes;
 
 /// <summary>
 /// Information of a Child instance formatted to be JSON Serializable
@@ -18,8 +18,8 @@ public record JSONChild(long ID,
                         string Firstname,
                         Nationalities Nationality,
                         DateTime BirthDate,
-                        string? PicturePath,
-                        string? GroupName,
+                        string PicturePath,
+                        string GroupName,
                         long[] TrustedPeopleIds);
 
 /// <summary>
@@ -70,7 +70,7 @@ public record JSONEducator(long ID,
                             string Firstname,
                             Nationalities Nationality,
                             ChildTypes PreferenceType,
-                            string? PicturePath);
+                            string PicturePath);
 
 
 /// <summary>
@@ -95,7 +95,7 @@ public static class TurnIntoJSONFormat
             child.Identity.Nationality,
             child.BirthDate,
             child.PicturePath,
-            child.Group?.Name,
+            child.Group?.Name ?? "",
             TrustedPeopleIds
         );
     }

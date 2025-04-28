@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using staticClasses;
+using ChildrenManagement.staticClasses;
 
 namespace ValidationBase;
 
